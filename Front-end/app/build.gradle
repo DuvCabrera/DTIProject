@@ -39,6 +39,13 @@ android {
 }
 
 dependencies {
+    def nav_version = "2.5.3"
+
+    // Navigation Related
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
+
 
     // Retrofit Related
     implementation 'com.google.code.gson:gson:2.9.0'
