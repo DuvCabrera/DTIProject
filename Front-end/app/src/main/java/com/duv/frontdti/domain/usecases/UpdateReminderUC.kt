@@ -5,7 +5,7 @@ import com.duv.frontdti.domain.repositories.ReminderRepository
 
 class UpdateReminderUC(private val repository: ReminderRepository) {
 
-    operator fun invoke(id: Int, reminder: Reminder){
+    suspend operator fun invoke(id: Int, reminder: Reminder){
         repository.updateReminder(id, reminder)
     }
 }

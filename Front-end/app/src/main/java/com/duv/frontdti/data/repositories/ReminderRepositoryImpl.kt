@@ -3,8 +3,9 @@ package com.duv.frontdti.data.repositories
 import com.duv.frontdti.data.data_source.remote.ReminderService
 import com.duv.frontdti.domain.model.Reminder
 import com.duv.frontdti.domain.repositories.ReminderRepository
+import javax.inject.Inject
 
-class ReminderRepositoryImpl(private val reminderService: ReminderService) : ReminderRepository {
+class ReminderRepositoryImpl @Inject constructor (private val reminderService: ReminderService) : ReminderRepository {
     override suspend fun createReminder(reminder: Reminder) {
         reminderService.createReminder(reminder)
     }
