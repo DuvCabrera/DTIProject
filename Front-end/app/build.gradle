@@ -33,6 +33,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    viewBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -45,6 +48,9 @@ dependencies {
     // Hilt Related
     implementation "com.google.dagger:hilt-android:2.45"
     kapt "com.google.dagger:hilt-compiler:2.45"
+
+    // Coroutines Related
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'

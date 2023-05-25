@@ -5,6 +5,7 @@ data class ReminderUC(
     val getReminderByIdUC: GetReminderByIdUC,
     val deleteReminderUC: DeleteReminderUC,
     val createReminderUC: CreateReminderUC,
-    val updateReminderUC: UpdateReminderUC
+    val updateReminderUC: UpdateReminderUC,
+    val reminderByDateUC: ReminderByDateUC
 )
 

@@ -36,6 +36,7 @@ object AppModule {
             deleteReminderUC = DeleteReminderUC(repository),
             getRemindersUC = GetRemindersUC(repository),
             getReminderByIdUC = GetReminderByIdUC(repository),
-            updateReminderUC = UpdateReminderUC(repository)
+            updateReminderUC = UpdateReminderUC(repository),
+            reminderByDateUC = ReminderByDateUC()
         )
 }

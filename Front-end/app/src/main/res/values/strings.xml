@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">Front Dti</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="reminders">Lembretes</string>
+    <string name="add_reminder">Add Reminder</string>
+    <string name="delete_reminder">Delete Reminder</string>
+    <string name="back_button">Back Button</string>
+    <string name="reminder">Lembrete</string>
+    <string name="date">Data - dd/mm/aaaa</string>
+    <string name="confirm">Confirmar</string>
 </resources>
