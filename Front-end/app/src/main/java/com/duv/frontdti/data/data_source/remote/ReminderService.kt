@@ -18,8 +18,8 @@ interface ReminderService {
     @POST("reminders")
     suspend fun createReminder(@Body reminder: Reminder)
 
-    @DELETE("reminders")
-    suspend fun deleteReminder(@Body reminder: Reminder)
+    @DELETE("reminders/{id}")
+    suspend fun deleteReminder(@Path("id") id: Int)
 
     @PUT("reminders/{id}")
     suspend fun updateReminder(@Path("id") id: Int, @Body reminder: Reminder)

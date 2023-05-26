@@ -14,8 +14,8 @@ class ReminderRepositoryImpl @Inject constructor (private val reminderService: R
         reminderService.updateReminder(id,reminder)
     }
 
-    override suspend fun deleteReminder(reminder: Reminder) {
-        reminderService.deleteReminder(reminder)
+    override suspend fun deleteReminder(id: Int) {
+        reminderService.deleteReminder(id)
     }
 
     override suspend fun getReminderById(id: Int): Reminder {

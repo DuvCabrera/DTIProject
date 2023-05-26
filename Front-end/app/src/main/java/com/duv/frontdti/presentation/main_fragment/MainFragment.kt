@@ -5,20 +5,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import com.duv.frontdti.R
-import com.duv.frontdti.databinding.ActivityMainBinding
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.duv.frontdti.databinding.FragmentMainBinding
+import com.duv.frontdti.domain.model.ReminderByDate
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
     private lateinit var navController: NavController
+    private val viewModel: MainFragmentViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+        val remindersObserver = Observer<List<ReminderByDate>> { reminders ->
+            initRecyclerViewAdapter(reminders)
+        }
+
+        viewModel.reminderList.observe(this, remindersObserver)
     }
 
     override fun onCreateView(
@@ -31,11 +41,29 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.getReminders()
         navController = findNavController()
         binding.fabAddReminder.setOnClickListener {
-            val action =MainFragmentDirections.actionMainFragmentToReminderCreation()
-            navController.navigate(action)
+            navigateToCreationPage()
         }
+    }
+
+    private fun initRecyclerViewAdapter(reminders: List<ReminderByDate>) {
+        val adapter = MainFragmentAdapter(reminders,
+            onItemClick = { id ->
+                navigateToCreationPage(id)
+            }, onDeleteClick = { id ->
+                viewModel.deleteReminder(id)
+            })
+
+        val rvPai = binding.rvPai
+        rvPai.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        rvPai.adapter = adapter
+    }
+
+    private fun navigateToCreationPage(id: Int = -1) {
+        val action = MainFragmentDirections.actionMainFragmentToReminderCreation(id)
+        navController.navigate(action)
     }
 
 }
