@@ -44,7 +44,7 @@ class MainFragment : Fragment() {
         viewModel.getReminders()
         navController = findNavController()
         binding.fabAddReminder.setOnClickListener {
-            navigateToCreationPage()
+            navigateToCreationPage(-1)
         }
     }
 
@@ -61,7 +61,7 @@ class MainFragment : Fragment() {
         rvPai.adapter = adapter
     }
 
-    private fun navigateToCreationPage(id: Int = -1) {
+    private fun navigateToCreationPage(id: Int) {
         val action = MainFragmentDirections.actionMainFragmentToReminderCreation(id)
         navController.navigate(action)
     }
