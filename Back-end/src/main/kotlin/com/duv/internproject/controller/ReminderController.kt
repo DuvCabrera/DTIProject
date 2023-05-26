@@ -23,8 +23,7 @@ class ReminderController(private val service: ReminderService) {
     fun create(@RequestBody reminder: Reminder): Reminder = service.create(reminder)
 
     @GetMapping
-    fun getAll(): List<Reminder> = service.getAll()
-
+    fun getAll(): List<Reminder> = service.getAll().sortedBy { it.date }
     @GetMapping("/{id}")
     fun getById(@PathVariable id: Long): ResponseEntity<Reminder> =
         service.getById(id).map {
