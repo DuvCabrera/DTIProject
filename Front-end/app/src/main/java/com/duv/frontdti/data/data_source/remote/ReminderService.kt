@@ -16,12 +16,12 @@ interface ReminderService {
     suspend fun getReminderById(@Path("id") id: Int): Reminder
 
     @POST("reminders")
-    suspend fun createReminder(@Body reminder: Reminder)
+    suspend fun createReminder(@Body reminder: Reminder): Reminder
 
     @DELETE("reminders/{id}")
     suspend fun deleteReminder(@Path("id") id: Int)
 
     @PUT("reminders/{id}")
-    suspend fun updateReminder(@Path("id") id: Int, @Body reminder: Reminder)
+    suspend fun updateReminder(@Path("id") id: Int, @Body reminder: Reminder): Reminder
 
 }
