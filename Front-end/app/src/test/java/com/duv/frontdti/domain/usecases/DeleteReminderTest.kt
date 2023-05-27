@@ -1,7 +1,6 @@
-package com.duv.frontdti.data.domain.usecases
+package com.duv.frontdti.domain.usecases
 
 import com.duv.frontdti.domain.repositories.ReminderRepository
-import com.duv.frontdti.domain.usecases.DeleteReminderUC
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 import org.mockito.Mockito

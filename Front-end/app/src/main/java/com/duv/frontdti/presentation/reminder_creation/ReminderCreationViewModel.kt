@@ -1,5 +1,6 @@
 package com.duv.frontdti.presentation.reminder_creation
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -19,16 +20,12 @@ class ReminderCreationViewModel @Inject constructor(
         MutableLiveData<Reminder?>()
     }
 
-    val reminder = _reminder
+    val reminder: LiveData<Reminder?> get() = _reminder
 
     private val _date: MutableLiveData<String> by lazy {
         MutableLiveData<String>()
     }
-    val date = _date
-
-    private val _name: MutableLiveData<String> by lazy {
-        MutableLiveData<String>()
-    }
+    val date: LiveData<String> get()  = _date
 
 
     fun getReminder(id: Int) {

@@ -1,10 +1,7 @@
-package com.duv.frontdti.data.domain.model
-
-import com.duv.frontdti.domain.model.Reminder
-import com.duv.frontdti.domain.model.ReminderByDate
+package com.duv.frontdti.domain.model
 
 object ReminderFactory {
-    val reminderList = listOf<Reminder>(
+    val reminderList = listOf(
         Reminder(
             id = 1, date = "11/10/2022",
             description = "mock de teste"
@@ -20,14 +17,19 @@ object ReminderFactory {
     )
 
     val reminderByDateList = listOf(
-        ReminderByDate(date = "11/10/2022", reminderList= listOf( Reminder(
+        Reminder(
             id = 1, date = "11/10/2022",
             description = "mock de teste"
-        ))),
-        ReminderByDate(date = "12/10/2022", reminderList= listOf( Reminder(
+        ),
+        Reminder(
             id = 2, date = "12/10/2022",
             description = "mock de teste 2"
-        )) )
+        )
+    ).groupBy { it.date }
+        .map { (date, reminder) ->
+            ReminderByDate(date, reminder)
 
-    )
+        }
+
+
 }

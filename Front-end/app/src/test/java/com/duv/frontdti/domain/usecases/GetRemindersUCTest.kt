@@ -1,8 +1,7 @@
-package com.duv.frontdti.data.domain.usecases
+package com.duv.frontdti.domain.usecases
 
-import com.duv.frontdti.data.domain.model.ReminderFactory
+import com.duv.frontdti.domain.model.ReminderFactory
 import com.duv.frontdti.domain.repositories.ReminderRepository
-import com.duv.frontdti.domain.usecases.GetRemindersUC
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
 import org.junit.Test

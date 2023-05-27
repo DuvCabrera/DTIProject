@@ -20,13 +20,16 @@ class MainFragmentViewModel @Inject constructor(
         MutableLiveData<List<ReminderByDate>>()
     }
 
-    val reminderList: LiveData<List<ReminderByDate>> = remindersByDateList
+    val reminderList: LiveData<List<ReminderByDate>> get()  =  remindersByDateList
 
     fun getReminders() {
         viewModelScope.launch(Dispatchers.IO) {
             remindersByDateList.postValue(
-                reminderUC.reminderByDateUC.invoke(
-                    reminderUC.getRemindersUC.invoke()))
+                reminderUC.getRemindersUC.invoke()
+                    .groupBy { it.date }
+                    .map { (date, reminder) ->
+                        ReminderByDate(date, reminder)
+                    })
         }
     }
 

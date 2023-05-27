@@ -1,7 +1,7 @@
 package com.duv.frontdti.data.repositories
 
 import com.duv.frontdti.data.data_source.remote.ReminderService
-import com.duv.frontdti.data.domain.model.ReminderFactory
+import com.duv.frontdti.domain.model.ReminderFactory
 import com.duv.frontdti.domain.ReminderNotFoundedException
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert
