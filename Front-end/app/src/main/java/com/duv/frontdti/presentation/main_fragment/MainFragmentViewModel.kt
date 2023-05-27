@@ -19,8 +19,11 @@ class MainFragmentViewModel @Inject constructor(
     private val remindersByDateList: MutableLiveData<List<ReminderByDate>> by lazy {
         MutableLiveData<List<ReminderByDate>>()
     }
+    val reminderList: LiveData<List<ReminderByDate>> get() = remindersByDateList
 
-    val reminderList: LiveData<List<ReminderByDate>> get()  =  remindersByDateList
+    private val _mainPageState: MutableLiveData<MainPageState> = MutableLiveData(MainPageState.WITHOUT_DATA)
+
+    val mainPageState: LiveData<MainPageState> = _mainPageState
 
     fun getReminders() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -29,6 +32,8 @@ class MainFragmentViewModel @Inject constructor(
                     .groupBy { it.date }
                     .map { (date, reminder) ->
                         ReminderByDate(date, reminder)
+                    }.also {
+                        if (it.isNotEmpty()) _mainPageState.postValue(MainPageState.WITH_DATA)
                     })
         }
     }
@@ -40,4 +45,6 @@ class MainFragmentViewModel @Inject constructor(
             getReminders()
         }
     }
+
+
 }

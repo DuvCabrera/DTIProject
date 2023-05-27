@@ -23,12 +23,16 @@ class MainFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val pageStateObserver = Observer<MainPageState> { state ->
+            initPage(state)
+        }
 
         val remindersObserver = Observer<List<ReminderByDate>> { reminders ->
             initRecyclerViewAdapter(reminders)
         }
 
         viewModel.reminderList.observe(this, remindersObserver)
+        viewModel.mainPageState.observe(this, pageStateObserver)
     }
 
     override fun onCreateView(
@@ -64,6 +68,22 @@ class MainFragment : Fragment() {
     private fun navigateToCreationPage(id: Int) {
         val action = MainFragmentDirections.actionMainFragmentToReminderCreation(id)
         navController.navigate(action)
+    }
+
+    private fun initPage(pageState: MainPageState) {
+        val tvWithoutReminders = binding.tvWithoutReminders
+        val ivReminders = binding.ivReminders
+        val rvReminder = binding.rvPai
+
+        if (pageState == MainPageState.WITH_DATA) {
+            tvWithoutReminders.visibility = View.GONE
+            ivReminders.visibility = View.GONE
+            rvReminder.visibility = View.VISIBLE
+        } else {
+            tvWithoutReminders.visibility = View.VISIBLE
+            ivReminders.visibility = View.VISIBLE
+            rvReminder.visibility = View.GONE
+        }
     }
 
 }

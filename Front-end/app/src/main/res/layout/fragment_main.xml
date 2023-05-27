@@ -3,25 +3,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:layout_marginStart="8dp"
     android:layout_marginEnd="8dp"
+    android:orientation="vertical"
     tools:context=".presentation.main_fragment.MainFragment">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="40sp"
-        android:textStyle="bold"
+        android:text="@string/reminders"
         android:textAlignment="center"
-        android:text="@string/reminders" />
+        android:textSize="40sp"
+        android:textStyle="bold" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_pai"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="56dp"
-        android:layout_marginBottom="70dp" />
+        android:layout_marginBottom="70dp"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/iv_reminders"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:contentDescription="@string/estamos_sem_lembretes"
+        android:src="@drawable/lembretes_3"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/tv_without_reminders"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="450dp"
+        android:text="@string/estamos_sem_lembretes"
+        android:textAlignment="center"
+        android:textSize="32sp"
+        android:visibility="visible" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_reminder"

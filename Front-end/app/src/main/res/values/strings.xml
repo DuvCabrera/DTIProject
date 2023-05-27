@@ -9,4 +9,5 @@
     <string name="reminder">Lembrete</string>
     <string name="date">Data - dd/mm/aaaa</string>
     <string name="confirm">Confirmar</string>
+    <string name="estamos_sem_lembretes">Estamos sem lembretes</string>
 </resources>
