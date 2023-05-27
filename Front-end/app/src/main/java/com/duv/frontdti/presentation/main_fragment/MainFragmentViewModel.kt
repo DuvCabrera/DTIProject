@@ -21,7 +21,9 @@ class MainFragmentViewModel @Inject constructor(
     }
     val reminderList: LiveData<List<ReminderByDate>> get() = remindersByDateList
 
-    private val _mainPageState: MutableLiveData<MainPageState> = MutableLiveData(MainPageState.WITHOUT_DATA)
+    private val _mainPageState: MutableLiveData<MainPageState> by lazy {
+        MutableLiveData<MainPageState>()
+    }
 
     val mainPageState: LiveData<MainPageState> = _mainPageState
 

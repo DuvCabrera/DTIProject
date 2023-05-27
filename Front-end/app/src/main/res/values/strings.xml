@@ -10,4 +10,6 @@
     <string name="date">Data - dd/mm/aaaa</string>
     <string name="confirm">Confirmar</string>
     <string name="estamos_sem_lembretes">Estamos sem lembretes</string>
+    <string name="empty_field">Preencha todos os campos</string>
+    <string name="confirm_error">Erro ao confirmar lembrete</string>
 </resources>

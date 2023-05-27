@@ -42,6 +42,8 @@ class ReminderCreation : Fragment(), DatePickerDialog.OnDateSetListener {
             setDate(it)
         }
 
+
+
         viewModel.reminder.observe(this, reminderObserver)
         viewModel.date.observe(this, dateObserver)
     }
@@ -55,6 +57,11 @@ class ReminderCreation : Fragment(), DatePickerDialog.OnDateSetListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val confirmationErrorObserver = Observer<ReminderCreationPageState> {
+            onConfirmOccurs(it,view)
+        }
+        viewModel.errorOnConfirm.observe(viewLifecycleOwner, confirmationErrorObserver)
+
         binding.ibBack.setOnClickListener {
             navController.popBackStack()
         }
@@ -65,7 +72,7 @@ class ReminderCreation : Fragment(), DatePickerDialog.OnDateSetListener {
             showDatePikerDialog()
         }
         binding.btConfirm.setOnClickListener {
-            confirmReminder(view)
+            confirmReminderCheck(view)
         }
     }
 
@@ -100,7 +107,7 @@ class ReminderCreation : Fragment(), DatePickerDialog.OnDateSetListener {
         binding.tvDate.text = date
     }
 
-    private fun confirmReminder(view: View) {
+    private fun confirmReminderCheck(view: View) {
         val date = binding.tvDate.text
         val name = binding.etName.text
         if (date.isNotEmpty() && name.isNotEmpty()) {
@@ -118,11 +125,21 @@ class ReminderCreation : Fragment(), DatePickerDialog.OnDateSetListener {
                     description = name.toString()
                 )
             )
-            navController.popBackStack()
         } else {
-            val snackbar = Snackbar.make(view, "Preencha todos os campos", Snackbar.LENGTH_SHORT)
+            val snackbar = Snackbar.make(view, getString(R.string.empty_field), Snackbar.LENGTH_SHORT)
             snackbar.setBackgroundTint(Color.RED)
             snackbar.show()
+        }
+    }
+
+    private fun onConfirmOccurs(isError: ReminderCreationPageState,view: View) {
+        if (isError == ReminderCreationPageState.ERROR) {
+            val snackbar = Snackbar.make(view, getString(R.string.confirm_error), Snackbar.LENGTH_SHORT)
+            snackbar.setBackgroundTint(Color.RED)
+            snackbar.show()
+            viewModel.setStateOK()
+        } else if(isError == ReminderCreationPageState.DONE) {
+            navController.popBackStack()
         }
     }
 
