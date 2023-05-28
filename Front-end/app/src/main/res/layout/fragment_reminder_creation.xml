@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/light_blue"
     tools:context=".presentation.reminder_creation.ReminderCreation">
 
     <ImageButton
@@ -11,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="@color/light_blue"
         android:contentDescription="@string/back_button"
         android:src="@drawable/baseline_keyboard_backspace_24"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,8 +24,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/reminder"
-        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:layout_marginStart="75dp"
         android:textSize="40sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ib_back"
         app:layout_constraintTop_toTopOf="parent" />
@@ -35,7 +38,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
-        android:background="@color/gray"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
         android:hint="@string/date"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,20 +51,21 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="32dp"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="@color/light_blue"
         android:contentDescription="@string/back_button"
         android:src="@drawable/baseline_calendar_month_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_page_name" />
 
     <LinearLayout
+        android:id="@+id/ll_text_box"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="24dp"
-        android:background="@color/gray"
+        android:background="@color/white"
         app:layout_constraintBottom_toTopOf="@id/bt_confirm"
         app:layout_constraintTop_toBottomOf="@+id/tv_date">
 
@@ -70,7 +75,6 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:autofillHints="Preencha seu lembrete"
-            android:background="@color/gray"
             android:inputType="textMultiLine"
             android:textSize="24sp"
             tools:ignore="LabelFor" />
@@ -84,6 +88,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
+        android:textColor="@color/white"
         android:text="@string/confirm"
         android:textSize="18sp"
         android:textStyle="bold"

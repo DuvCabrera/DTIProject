@@ -58,10 +58,14 @@ class ReminderRepositoryImpl @Inject constructor(
             val localReminders = reminderDao.getReminderList()
 
             remindersToReturn = if (remoteReminders.isEmpty() && localReminders.isNotEmpty()) {
+                reminderDao.deleteList(localReminders)
+                var id = 0
                 for (reminder in localReminders) {
+                    id += 1
                     reminderService.createReminder(reminder)
+                    reminderDao.insertReminder(reminder.copy(id = id))
                 }
-                localReminders
+                reminderDao.getReminderList()
             } else {
                 remoteReminders
             }

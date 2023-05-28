@@ -75,6 +75,9 @@ class ReminderCreation : Fragment(), DatePickerDialog.OnDateSetListener {
         binding.btConfirm.setOnClickListener {
             confirmReminderCheck(view)
         }
+        binding.llTextBox.setOnClickListener {
+            binding.etName.requestFocus()
+        }
     }
 
     private fun insertReminderInfo(reminder: Reminder) {
