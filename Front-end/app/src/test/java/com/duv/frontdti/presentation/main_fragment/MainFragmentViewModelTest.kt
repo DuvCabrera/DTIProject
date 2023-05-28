@@ -37,6 +37,9 @@ class MainFragmentViewModelTest {
     @Mock
     private lateinit var observeReminderList: Observer<List<ReminderByDate>>
 
+    @Mock
+    private lateinit var observeMainPageState: Observer<MainPageState>
+
     private lateinit var viewModel: MainFragmentViewModel
     private lateinit var reminderUCMock: ReminderUC
 
@@ -52,6 +55,7 @@ class MainFragmentViewModelTest {
         )
 
         viewModel = MainFragmentViewModel(reminderUCMock)
+        viewModel.mainPageState.observeForever(observeMainPageState)
         viewModel.reminderList.observeForever(observeReminderList)
 
     }
@@ -68,6 +72,17 @@ class MainFragmentViewModelTest {
         val value = viewModel.reminderList.getOrAwaitValue()
 
         Assert.assertEquals(ReminderFactory.reminderByDateList, value)
+    }
+    @Test
+    fun get_reminders_with_data_invoke_main_page_observer() = runBlocking {
+
+        whenever(reminderUCMock.getRemindersUC.invoke())
+            .thenReturn(ReminderFactory.reminderList)
+
+        viewModel.getReminders()
+
+
+        verify(observeMainPageState).onChanged(MainPageState.WITH_DATA)
     }
     @Test
     fun delete_reminders_with_success() = runBlocking {

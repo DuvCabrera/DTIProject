@@ -3,6 +3,7 @@ package com.duv.frontdti.presentation.reminder_creation
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.duv.frontdti.domain.CreateReminderException
 import com.duv.frontdti.domain.model.Reminder
 import com.duv.frontdti.domain.model.ReminderFactory
 import com.duv.frontdti.domain.repositories.ReminderRepository
@@ -20,6 +21,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
+import org.mockito.exceptions.base.MockitoException
 import org.robolectric.annotation.Config
 
 @Config(manifest = Config.NONE)
@@ -38,6 +40,9 @@ class ReminderCreationViewModelTest {
     @Mock
     private lateinit var dateObserver: Observer<String>
 
+    @Mock
+    private lateinit var errorConfirmObserver: Observer<ReminderCreationPageState>
+
     private lateinit var viewModel: ReminderCreationViewModel
     private lateinit var reminderUCMock: ReminderUC
 
@@ -53,6 +58,7 @@ class ReminderCreationViewModelTest {
         )
 
         viewModel = ReminderCreationViewModel(reminderUCMock)
+        viewModel.errorOnConfirm.observeForever(errorConfirmObserver)
         viewModel.reminder.observeForever(reminderObserver)
         viewModel.date.observeForever(dateObserver)
     }
@@ -84,30 +90,72 @@ class ReminderCreationViewModelTest {
         verify(reminderRepository).createReminder(reminder)
 
     }
+
+    @Test
+    fun save_reminder_with_error_invoke_error_observer(): Unit = runBlocking {
+
+        val reminder = ReminderFactory.reminder.copy(id = null)
+        whenever(reminderUCMock.createReminderUC.invoke(reminder)).thenThrow(
+            MockitoException("")
+        )
+        viewModel.saveReminder(reminder)
+
+        delay(200)
+
+        verify(errorConfirmObserver).onChanged(ReminderCreationPageState.ERROR)
+
+    }
+
     @Test
     fun update_reminder_with_success(): Unit = runBlocking {
         val id = 1
         val reminder = ReminderFactory.reminder
-        whenever(reminderUCMock.updateReminderUC.invoke(id,reminder)).thenReturn(
+        whenever(reminderUCMock.updateReminderUC.invoke(id, reminder)).thenReturn(
             ReminderFactory.reminder
         )
-        viewModel.updateReminder(id,reminder)
+        viewModel.updateReminder(id, reminder)
 
         delay(200)
 
-        verify(reminderRepository).updateReminder(id,reminder)
+        verify(reminderRepository).updateReminder(id, reminder)
+
+    }
+
+    @Test
+    fun update_reminder_with_error_invoke_error_observer(): Unit = runBlocking {
+        val id = 1
+        val reminder = ReminderFactory.reminder
+        whenever(reminderUCMock.updateReminderUC.invoke(id, reminder)).thenThrow(
+            MockitoException("")
+        )
+        viewModel.updateReminder(id, reminder)
+
+        delay(200)
+
+        verify(errorConfirmObserver).onChanged(ReminderCreationPageState.ERROR)
 
     }
 
     @Test
     fun set_date_with_success() = runBlocking {
-       val date = "22/10/1988"
+        val date = "22/10/1988"
 
-       viewModel.setDate(date)
+        viewModel.setDate(date)
 
         val value = viewModel.date.getOrAwaitValue()
 
         Assert.assertEquals(date, value)
         verify(dateObserver).onChanged(value)
+    }
+    @Test
+    fun set_state_ok_with_success() = runBlocking {
+        val state = ReminderCreationPageState.OK
+
+        viewModel.setStateOK()
+
+        val value = viewModel.errorOnConfirm.getOrAwaitValue()
+
+        Assert.assertEquals(state, value)
+
     }
 }
