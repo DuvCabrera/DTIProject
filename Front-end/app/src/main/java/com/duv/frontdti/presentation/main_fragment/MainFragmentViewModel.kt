@@ -19,13 +19,14 @@ class MainFragmentViewModel @Inject constructor(
     private val remindersByDateList: MutableLiveData<List<ReminderByDate>> by lazy {
         MutableLiveData<List<ReminderByDate>>()
     }
-    val reminderList: LiveData<List<ReminderByDate>> get() = remindersByDateList
 
     private val _mainPageState: MutableLiveData<MainPageState> by lazy {
         MutableLiveData<MainPageState>()
     }
     private val _onDeleteError: MutableLiveData<Boolean> =
         MutableLiveData<Boolean>(false)
+
+    val reminderList: LiveData<List<ReminderByDate>> get() = remindersByDateList
 
     val onDeleteError: LiveData<Boolean> get() = _onDeleteError
 

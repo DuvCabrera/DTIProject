@@ -9,9 +9,11 @@ import com.duv.frontdti.domain.model.ReminderByDate
 import com.duv.frontdti.domain.model.ReminderFactory
 import com.duv.frontdti.domain.repositories.ReminderRepository
 import com.duv.frontdti.domain.usecases.*
+import com.nhaarman.mockitokotlin2.times
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.*
 import org.junit.*
@@ -36,9 +38,10 @@ class MainFragmentViewModelTest {
 
     @Mock
     private lateinit var observeReminderList: Observer<List<ReminderByDate>>
-
     @Mock
     private lateinit var observeMainPageState: Observer<MainPageState>
+    @Mock
+    private lateinit var observeOnDeleteError: Observer<Boolean>
 
     private lateinit var viewModel: MainFragmentViewModel
     private lateinit var reminderUCMock: ReminderUC
@@ -55,6 +58,7 @@ class MainFragmentViewModelTest {
         )
 
         viewModel = MainFragmentViewModel(reminderUCMock)
+        viewModel.onDeleteError.observeForever(observeOnDeleteError)
         viewModel.mainPageState.observeForever(observeMainPageState)
         viewModel.reminderList.observeForever(observeReminderList)
 
@@ -71,18 +75,21 @@ class MainFragmentViewModelTest {
 
         val value = viewModel.reminderList.getOrAwaitValue()
 
+        verify(observeOnDeleteError, times(2)).onChanged(false)
+        verify(observeMainPageState).onChanged(MainPageState.LOADING)
+        verify(observeMainPageState).onChanged(MainPageState.WITH_DATA)
         Assert.assertEquals(ReminderFactory.reminderByDateList, value)
     }
     @Test
-    fun get_reminders_with_data_invoke_main_page_observer() = runBlocking {
+    fun get_reminders_without_data_invoke_main_page_observer() = runBlocking {
 
         whenever(reminderUCMock.getRemindersUC.invoke())
-            .thenReturn(ReminderFactory.reminderList)
+            .thenReturn(listOf())
 
         viewModel.getReminders()
+        delay(200)
 
-
-        verify(observeMainPageState).onChanged(MainPageState.WITH_DATA)
+        verify(observeMainPageState).onChanged(MainPageState.WITHOUT_DATA)
     }
     @Test
     fun delete_reminders_with_success() = runBlocking {
@@ -95,9 +102,15 @@ class MainFragmentViewModelTest {
 
         val value = viewModel.reminderList.getOrAwaitValue()
         verify(observeReminderList).onChanged(ReminderFactory.reminderByDateList)
+        verify(observeOnDeleteError, times(3)).onChanged(false)
         Assert.assertEquals(ReminderFactory.reminderByDateList, value)
     }
+    @Test
+    fun set_delete_error_false() = runBlocking {
+        viewModel.setDeleteErrorFalse()
 
+        verify(observeOnDeleteError, times(2)).onChanged(false)
+    }
 
 }
 

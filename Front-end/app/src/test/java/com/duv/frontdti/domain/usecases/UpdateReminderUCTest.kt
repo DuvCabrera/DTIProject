@@ -3,7 +3,6 @@ package com.duv.frontdti.domain.usecases
 import com.duv.frontdti.domain.model.ReminderFactory
 import com.duv.frontdti.domain.repositories.ReminderRepository
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert
 import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
@@ -18,12 +17,12 @@ class UpdateReminderUCTest {
         val id = 1
         val reminder = ReminderFactory.reminder
 
-        `when`(repositoryMock.updateReminder(id, reminder)).thenReturn(reminder)
+        `when`(repositoryMock.updateReminder(id, reminder)).thenReturn(null)
 
-        val result = updateReminderUC.invoke(id, reminder)
+        updateReminderUC.invoke(id, reminder)
 
         Mockito.verify(repositoryMock).updateReminder(id, reminder)
-        Assert.assertEquals(result, reminder)
+
 
     }
 }

@@ -3,7 +3,6 @@ package com.duv.frontdti.presentation.reminder_creation
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.duv.frontdti.domain.CreateReminderException
 import com.duv.frontdti.domain.model.Reminder
 import com.duv.frontdti.domain.model.ReminderFactory
 import com.duv.frontdti.domain.repositories.ReminderRepository
@@ -36,12 +35,11 @@ class ReminderCreationViewModelTest {
 
     @Mock
     private lateinit var reminderObserver: Observer<Reminder?>
-
     @Mock
     private lateinit var dateObserver: Observer<String>
-
     @Mock
-    private lateinit var errorConfirmObserver: Observer<ReminderCreationPageState>
+    private lateinit var confirmErrorObserver: Observer<Boolean>
+
 
     private lateinit var viewModel: ReminderCreationViewModel
     private lateinit var reminderUCMock: ReminderUC
@@ -58,7 +56,7 @@ class ReminderCreationViewModelTest {
         )
 
         viewModel = ReminderCreationViewModel(reminderUCMock)
-        viewModel.errorOnConfirm.observeForever(errorConfirmObserver)
+        viewModel.confirmError.observeForever(confirmErrorObserver)
         viewModel.reminder.observeForever(reminderObserver)
         viewModel.date.observeForever(dateObserver)
     }
@@ -81,13 +79,14 @@ class ReminderCreationViewModelTest {
 
         val reminder = ReminderFactory.reminder.copy(id = null)
         whenever(reminderUCMock.createReminderUC.invoke(reminder)).thenReturn(
-            ReminderFactory.reminder
+            null
         )
         viewModel.saveReminder(reminder)
 
         delay(200)
 
         verify(reminderRepository).createReminder(reminder)
+        verify(confirmErrorObserver).onChanged(false)
 
     }
 
@@ -102,7 +101,7 @@ class ReminderCreationViewModelTest {
 
         delay(200)
 
-        verify(errorConfirmObserver).onChanged(ReminderCreationPageState.ERROR)
+        verify(confirmErrorObserver).onChanged(true)
 
     }
 
@@ -111,13 +110,14 @@ class ReminderCreationViewModelTest {
         val id = 1
         val reminder = ReminderFactory.reminder
         whenever(reminderUCMock.updateReminderUC.invoke(id, reminder)).thenReturn(
-            ReminderFactory.reminder
+            null
         )
         viewModel.updateReminder(id, reminder)
 
         delay(200)
 
         verify(reminderRepository).updateReminder(id, reminder)
+        verify(confirmErrorObserver).onChanged(false)
 
     }
 
@@ -132,7 +132,7 @@ class ReminderCreationViewModelTest {
 
         delay(200)
 
-        verify(errorConfirmObserver).onChanged(ReminderCreationPageState.ERROR)
+        verify(confirmErrorObserver).onChanged(true)
 
     }
 
@@ -147,15 +147,5 @@ class ReminderCreationViewModelTest {
         Assert.assertEquals(date, value)
         verify(dateObserver).onChanged(value)
     }
-    @Test
-    fun set_state_ok_with_success() = runBlocking {
-        val state = ReminderCreationPageState.OK
 
-        viewModel.setStateOK()
-
-        val value = viewModel.errorOnConfirm.getOrAwaitValue()
-
-        Assert.assertEquals(state, value)
-
-    }
 }

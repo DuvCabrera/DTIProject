@@ -63,7 +63,6 @@ class ReminderRepositoryImpl @Inject constructor(
                 }
                 localReminders
             } else {
-
                 remoteReminders
             }
 
