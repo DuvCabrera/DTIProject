@@ -27,10 +27,11 @@ class ReminderCreationViewModel @Inject constructor(
     }
     val date: LiveData<String> get() = _date
 
-    private val _errorOnConfirm: MutableLiveData<ReminderCreationPageState> =
-        MutableLiveData(ReminderCreationPageState.OK)
+    private val _confirmError: MutableLiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>()
+    }
 
-    val errorOnConfirm: LiveData<ReminderCreationPageState> = _errorOnConfirm
+    val confirmError: LiveData<Boolean> get() = _confirmError
 
 
     fun getReminder(id: Int) {
@@ -43,9 +44,12 @@ class ReminderCreationViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 reminderUC.createReminderUC.invoke(reminder)
+                _confirmError.postValue(false)
+
             } catch (e: Exception) {
-                _errorOnConfirm.postValue(ReminderCreationPageState.ERROR)
+                _confirmError.postValue(true)
             }
+
         }
     }
 
@@ -53,18 +57,16 @@ class ReminderCreationViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 reminderUC.updateReminderUC.invoke(id, reminder)
+                _confirmError.postValue(false)
+
             } catch (e: Exception) {
-                _errorOnConfirm.postValue(ReminderCreationPageState.ERROR)
+                _confirmError.postValue(true)
             }
         }
     }
 
     fun setDate(date: String) {
         _date.value = date
-    }
-
-    fun setStateOK() {
-        _errorOnConfirm.postValue(ReminderCreationPageState.OK)
     }
 
 

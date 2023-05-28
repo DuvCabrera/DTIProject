@@ -1,5 +1,8 @@
 package com.duv.frontdti.di
 
+import android.app.Application
+import androidx.room.Room
+import com.duv.frontdti.data.data_source.cache.ReminderDatabase
 import com.duv.frontdti.data.data_source.remote.ReminderService
 import com.duv.frontdti.data.repositories.ReminderRepositoryImpl
 import com.duv.frontdti.domain.repositories.ReminderRepository
@@ -25,8 +28,17 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideReminderRepository(service: ReminderService): ReminderRepository =
-        ReminderRepositoryImpl(service)
+    fun provideReminderDatabase(app: Application): ReminderDatabase {
+        return Room.databaseBuilder(
+            app,ReminderDatabase::class.java,
+            ReminderDatabase.DATABASE_NAME
+        ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideReminderRepository(service: ReminderService,db: ReminderDatabase): ReminderRepository =
+        ReminderRepositoryImpl(service, db.reminderDao())
 
     @Provides
     @Singleton

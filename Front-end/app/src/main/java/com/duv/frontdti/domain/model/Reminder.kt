@@ -1,7 +1,11 @@
 package com.duv.frontdti.domain.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity
 data class Reminder(
-    val id: Int? = null,
+    @PrimaryKey(autoGenerate = true) val id: Int? = null,
     val date: String,
     val description: String
 )
