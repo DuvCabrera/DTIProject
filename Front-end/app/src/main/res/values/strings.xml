@@ -12,4 +12,7 @@
     <string name="estamos_sem_lembretes">Estamos sem lembretes</string>
     <string name="empty_field">Preencha todos os campos</string>
     <string name="confirm_error">Erro ao confirmar lembrete</string>
+    <string name="cant_navigate_without_connection">Não é possivel navegar para tela de atualização offline</string>
+    <string name="impossible_without_connection">Não é possivel fazer alterações sem estar conectado</string>
+    <string name="cant_delete_without_connection">Não é possivel deletar sem conexão</string>
 </resources>

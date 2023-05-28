@@ -3,11 +3,11 @@ package com.duv.frontdti.presentation.reminder_creation
 import android.app.DatePickerDialog
 import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
@@ -34,6 +34,7 @@ class ReminderCreation : Fragment(), DatePickerDialog.OnDateSetListener {
         if (argsValue != -1) viewModel.getReminder(argsValue)
         navController = findNavController()
 
+
         val reminderObserver = Observer<Reminder?> {
             insertReminderInfo(it!!)
         }
@@ -42,25 +43,25 @@ class ReminderCreation : Fragment(), DatePickerDialog.OnDateSetListener {
             setDate(it)
         }
 
-
-
         viewModel.reminder.observe(this, reminderObserver)
         viewModel.date.observe(this, dateObserver)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentReminderCreationBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val confirmationErrorObserver = Observer<ReminderCreationPageState> {
-            onConfirmOccurs(it,view)
+
+        val onConfirmErrorObserver = Observer<Boolean> {
+            confirmHasError(it, view)
         }
-        viewModel.errorOnConfirm.observe(viewLifecycleOwner, confirmationErrorObserver)
+
+        viewModel.confirmError.observe(viewLifecycleOwner, onConfirmErrorObserver)
 
         binding.ibBack.setOnClickListener {
             navController.popBackStack()
@@ -125,22 +126,25 @@ class ReminderCreation : Fragment(), DatePickerDialog.OnDateSetListener {
                     description = name.toString()
                 )
             )
+
         } else {
-            val snackbar = Snackbar.make(view, getString(R.string.empty_field), Snackbar.LENGTH_SHORT)
+            val snackbar =
+                Snackbar.make(view, getString(R.string.empty_field), Snackbar.LENGTH_SHORT)
             snackbar.setBackgroundTint(Color.RED)
             snackbar.show()
         }
     }
 
-    private fun onConfirmOccurs(isError: ReminderCreationPageState,view: View) {
-        if (isError == ReminderCreationPageState.ERROR) {
-            val snackbar = Snackbar.make(view, getString(R.string.confirm_error), Snackbar.LENGTH_SHORT)
+    private fun confirmHasError(hasError: Boolean, view: View) {
+        if(hasError){
+            val snackbar =
+                Snackbar.make(view, getString(R.string.impossible_without_connection), Snackbar.LENGTH_SHORT)
             snackbar.setBackgroundTint(Color.RED)
             snackbar.show()
-            viewModel.setStateOK()
-        } else if(isError == ReminderCreationPageState.DONE) {
+        } else {
             navController.popBackStack()
         }
     }
+
 
 }

@@ -7,3 +7,7 @@ class ReminderNotFoundedException(message: String?) : ReminderExceptions(message
 class CreateReminderException(message: String?) : ReminderExceptions(message)
 
 class UpdateReminderException(message: String?) : ReminderExceptions(message)
+
+class DeleteReminderException(message: String?) : ReminderExceptions(message)
+
+class WithoutConnectionException(message: String?) : ReminderExceptions(message)
